@@ -4,10 +4,11 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface AuthState {
 	isAuthenticated: boolean;
 	user: {
-		id: string;
-		name: string;
+		idRol: string;
+		username: string;
+		email: string;
 	} | null;
-	token: string | null;
+	accessToken: string | null;
 }
 
 // Function to load initial state from localStorage
@@ -21,7 +22,7 @@ const loadInitialState = (): AuthState => {
 			return {
 				isAuthenticated: false,
 				user: null,
-				token: null,
+				accessToken: null,
 			};
 		}
 		return JSON.parse(serializedState);
@@ -30,7 +31,7 @@ const loadInitialState = (): AuthState => {
 		return {
 			isAuthenticated: false,
 			user: null,
-			token: null,
+			accessToken: null,
 		};
 	}
 };
@@ -55,11 +56,14 @@ const authSlice = createSlice({
 	reducers: {
 		loginSuccess(
 			state,
-			action: PayloadAction<{ user: AuthState["user"]; token: string }>
+			action: PayloadAction<{
+				user: AuthState["user"];
+				accessToken: string;
+			}>
 		) {
 			state.isAuthenticated = true;
 			state.user = action.payload.user;
-			state.token = action.payload.token;
+			state.accessToken = action.payload.accessToken;
 
 			// Save state to localStorage upon successful login
 			saveState(state);
@@ -67,7 +71,7 @@ const authSlice = createSlice({
 		logout(state) {
 			state.isAuthenticated = false;
 			state.user = null;
-			state.token = null;
+			state.accessToken = null;
 
 			// Remove state from localStorage upon logout
 			if (typeof window !== "undefined" && window.localStorage) {

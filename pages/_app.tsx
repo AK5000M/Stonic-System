@@ -19,6 +19,8 @@ import "../src/styles/globals.scss";
 
 import { SignInURL } from "@/utils/routes";
 
+const hashSgdea = process.env.NEXT_PUBLIC_HASHSGDEA as string;
+
 const clientSideEmotionCache = createEmotionCache();
 
 interface MyAppProps extends AppProps {
@@ -38,7 +40,7 @@ export default function MyApp(props: MyAppProps) {
 	useEffect(() => {
 		// Check if user is authenticated and redirect if not
 		if (typeof window !== "undefined") {
-			const token = localStorage.getItem("token");
+			const token = localStorage.getItem(hashSgdea);
 			if (!token) {
 				router.push(SignInURL);
 			}

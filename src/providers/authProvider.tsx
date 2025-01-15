@@ -2,13 +2,13 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { ChildrenProps } from "@/types/index";
-import { UserModelType } from "@/types/index";
+import { ChildrenProps } from "@/types";
 
 import { SignInURL, DashboardURL } from "@/utils/routes";
 
 const restrictedPages = [DashboardURL];
-const restrictedPagesForReSellers = [DashboardURL];
+
+const hashSgdea = process.env.NEXT_PUBLIC_HASHSGDEA as string;
 
 export const AuthenticationProvider: React.FC<ChildrenProps> = ({
 	children,
@@ -18,43 +18,50 @@ export const AuthenticationProvider: React.FC<ChildrenProps> = ({
 		(state: RootState) => state.auth.isAuthenticated
 	);
 
-	// Ensure that the user is correctly typed as UserModelType or null
-	const user = useSelector(
-		(state: RootState) => state.auth.user
-	) as UserModelType | null;
-
 	const currentRoute = router.pathname;
 
 	useEffect(() => {
 		if (typeof window !== "undefined") {
-			// No need for `token`, rely on isAuthenticated
+			let token = null;
+			if (window.localStorage) {
+				token = localStorage.getItem(hashSgdea);
+			}
 			const isRestricted = restrictedPages.includes(currentRoute);
 
-			// Redirect if the page is restricted and user is not authenticated
-			if (isRestricted && !isAuthenticated) {
-				router.push(SignInURL);
-			} else if (
-				isAuthenticated &&
-				(currentRoute === SignInURL || currentRoute === "/")
-			) {
-				router.push(DashboardURL);
+			if (isRestricted) {
+				if (!isAuthenticated || token == null) {
+					router.push(SignInURL);
+				}
+			} else {
+				if (
+					isAuthenticated &&
+					(currentRoute === SignInURL || currentRoute === "/")
+				) {
+					router.push(DashboardURL);
+				}
 			}
 		}
 	}, [isAuthenticated, currentRoute, router]);
 
-	useEffect(() => {
-		if (typeof window !== "undefined") {
-			// If the user is a reseller, check restricted pages for resellers
-			if (user && user.role === "reseller") {
-				const isRestricted =
-					restrictedPagesForReSellers.includes(currentRoute);
+	// 	if (typeof window !== "undefined") {
+	// 		let token = null;
+	// 		if (window.localStorage) {
+	// 			token = localStorage.getItem("token");
+	// 		}
+	// 		if (user && user.role == "reseller") {
+	// 			const isRestricted =
+	// 				restrictedPagesForReSellers.includes(currentRoute);
 
-				if (!isRestricted && isAuthenticated) {
-					router.push("/");
-				}
-			}
-		}
-	}, [isAuthenticated, currentRoute, user, router]);
+	// 			if (!isRestricted && isAuthenticated) {
+	// 				router.push(UserManagementURL);
+	// 			}
+	// 		}
+	// 	}
+	// }, [isAuthenticated, currentRoute, user]);
 
-	return <div className="authentication">{children}</div>;
+	return (
+		<React.Fragment>
+			<div className="authentication">{children}</div>
+		</React.Fragment>
+	);
 };
