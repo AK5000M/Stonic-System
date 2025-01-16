@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router"; // Import useRouter
 import {
@@ -25,7 +25,7 @@ interface SideNavProps {
 }
 
 const SideNav: React.FC<SideNavProps> = ({ collapsed, setCollapsed }) => {
-	const [openMenu, setOpenMenu] = useState<string | null>(null); // Track the currently open menu
+	const [openMenus, setOpenMenus] = useState<string[]>([]); // Track open menus
 	const [selectedItem, setSelectedItem] = useState<string>("");
 	const router = useRouter(); // Initialize the router
 
@@ -36,7 +36,7 @@ const SideNav: React.FC<SideNavProps> = ({ collapsed, setCollapsed }) => {
 			title: "Panel",
 			icon: <DashboardOutlinedIcon />,
 			submenu: [],
-			route: "/dashboard", // Define the route for this menu item
+			route: "/dashboard",
 		},
 		{
 			id: "radicacion",
@@ -46,30 +46,74 @@ const SideNav: React.FC<SideNavProps> = ({ collapsed, setCollapsed }) => {
 				{
 					id: "radicacion-estandar",
 					title: "Radicación estándar",
+					icon: <DashboardOutlinedIcon />, // Add submenu icons
 					route: "/filing",
 				},
 				{
 					id: "radicacion-correo",
 					title: "Radicación correo e.",
+					icon: <HighQualityOutlinedIcon />,
+					route: "/filing/email",
+				},
+			],
+		},
+		{
+			id: "newMenu",
+			title: "New Menu",
+			icon: <HighQualityOutlinedIcon />,
+			submenu: [
+				{
+					id: "new-submenu",
+					title: "New submenu",
+					icon: <DashboardOutlinedIcon />,
+					route: "/",
+				},
+				{
+					id: "new-submenu-2",
+					title: "New Submenu 2",
+					icon: <HighQualityOutlinedIcon />,
 					route: "/filing/email",
 				},
 			],
 		},
 	];
 
-	const handleToggle = () => {
-		setCollapsed(!collapsed); // Toggle the collapsed state
-	};
+	const handleToggle = () => setCollapsed(!collapsed);
 
-	// Update the menu open logic to toggle only one menu at a time
 	const handleMenuClick = (menuId: string) => {
-		setOpenMenu(openMenu === menuId ? null : menuId); // Toggle submenu open/close for the selected menu
+		setOpenMenus((prevOpenMenus) =>
+			prevOpenMenus.includes(menuId)
+				? prevOpenMenus.filter((id) => id !== menuId)
+				: [...prevOpenMenus, menuId]
+		);
 	};
 
 	const handleSelectItem = (item: string, route: string) => {
-		setSelectedItem(item); // Set selected item
-		router.push(route); // Redirect to the specified route
+		setSelectedItem(item);
+		router.push(route);
 	};
+
+	// Automatically open the menu based on the current route
+	useEffect(() => {
+		const activeMenu = menuData.find((menu) =>
+			menu.submenu.some((submenu) => submenu.route === router.pathname)
+		);
+
+		if (activeMenu) {
+			setOpenMenus([activeMenu.id]);
+			const activeSubmenu = activeMenu.submenu.find(
+				(submenu) => submenu.route === router.pathname
+			);
+			setSelectedItem(activeSubmenu ? activeSubmenu.id : "");
+		} else {
+			const activeTopLevelMenu = menuData.find(
+				(menu) => menu.route === router.pathname
+			);
+			if (activeTopLevelMenu) {
+				setSelectedItem(activeTopLevelMenu.id);
+			}
+		}
+	}, [router.pathname]);
 
 	return (
 		<Drawer
@@ -83,7 +127,6 @@ const SideNav: React.FC<SideNavProps> = ({ collapsed, setCollapsed }) => {
 				},
 			}}
 		>
-			{/* Logo Section */}
 			<Box
 				sx={{
 					height: 64,
@@ -94,88 +137,61 @@ const SideNav: React.FC<SideNavProps> = ({ collapsed, setCollapsed }) => {
 					px: 2,
 				}}
 			>
-				{collapsed ? (
-					<Image
-						src="/assets/logo/logo-sm.webp"
-						alt="Logo"
-						width={120}
-						height={40}
-						style={{ objectFit: "contain" }}
-						priority
-					/>
-				) : (
-					<Image
-						src="/assets/logo/logo.webp"
-						alt="Logo"
-						width={120}
-						height={40}
-						style={{ objectFit: "contain" }}
-						priority
-					/>
-				)}
+				<Image
+					src={
+						collapsed
+							? "/assets/logo/logo-sm.webp"
+							: "/assets/logo/logo.webp"
+					}
+					alt="Logo"
+					width={120}
+					height={40}
+					style={{ objectFit: "contain" }}
+					priority
+				/>
 			</Box>
 
-			{/* Toggle Button (left/right) */}
 			<Box sx={{ display: "flex", justifyContent: "flex-end", px: 1 }}>
 				<IconButton onClick={handleToggle}>
 					{collapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
 				</IconButton>
 			</Box>
 
-			{/* Navigation List */}
 			<List>
 				{menuData.map((menu) => (
 					<React.Fragment key={menu.id}>
-						{/* Panel Item */}
 						<ListItem disablePadding>
 							<ListItemButton
-								selected={selectedItem === menu.id} // Check if this item is selected
+								selected={selectedItem === menu.id}
 								onClick={() =>
-									handleSelectItem(
-										menu.id,
-										menu.route as string
-									)
-								} // Set this item as selected and redirect
-								sx={{
-									backgroundColor:
-										selectedItem === menu.id
-											? "blue"
-											: "inherit", // Blue background for selected item
-								}}
+									menu.submenu.length === 0
+										? handleSelectItem(
+												menu.id,
+												menu.route || ""
+										  )
+										: handleMenuClick(menu.id)
+								}
 							>
-								<ListItemIcon className="side-menu">
+								<ListItemIcon style={{ minWidth: "30px" }}>
 									{menu.icon}
 								</ListItemIcon>
 								{!collapsed && (
 									<ListItemText primary={menu.title} />
 								)}
+								{menu.submenu.length > 0 && (
+									<IconButton edge="end">
+										{openMenus.includes(menu.id) ? (
+											<ExpandLessIcon />
+										) : (
+											<ExpandMoreIcon />
+										)}
+									</IconButton>
+								)}
 							</ListItemButton>
 						</ListItem>
 
-						{/* Radicación Item with Submenu */}
-						{menu.submenu.length > 0 && (
-							<ListItem disablePadding>
-								<ListItemButton
-									onClick={() => handleMenuClick(menu.id)}
-								>
-									<ListItemIcon className="side-menu">
-										{menu.icon}
-									</ListItemIcon>
-									{!collapsed && (
-										<ListItemText primary={menu.title} />
-									)}
-									{openMenu === menu.id ? (
-										<ExpandLessIcon />
-									) : (
-										<ExpandMoreIcon />
-									)}
-								</ListItemButton>
-							</ListItem>
-						)}
-
-						{/* Submenu under Radicación */}
 						<Collapse
-							in={openMenu === menu.id}
+							in={openMenus.includes(menu.id)}
 							timeout="auto"
 							unmountOnExit
 						>
@@ -184,19 +200,21 @@ const SideNav: React.FC<SideNavProps> = ({ collapsed, setCollapsed }) => {
 									<ListItem disablePadding key={submenu.id}>
 										<ListItemButton
 											sx={{ pl: 4 }}
+											selected={
+												selectedItem === submenu.id
+											}
 											onClick={() =>
 												handleSelectItem(
 													submenu.id,
 													submenu.route
 												)
 											}
-											selected={
-												selectedItem === submenu.id
-											}
 										>
-											<ListItemText
-												primary={submenu.title}
-											/>
+											{!collapsed && (
+												<ListItemText
+													primary={submenu.title}
+												/>
+											)}
 										</ListItemButton>
 									</ListItem>
 								))}
