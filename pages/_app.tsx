@@ -16,6 +16,7 @@ import createEmotionCache from "@/utils/createEmotionCache";
 import theme from "@/styles/theme";
 import { store } from "@/store";
 import "../src/styles/globals.scss";
+import "../src/styles/topNav.scss";
 
 import { SignInURL } from "@/utils/routes";
 

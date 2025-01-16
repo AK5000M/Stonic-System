@@ -4,7 +4,7 @@ import { ToastContainer } from "react-toastify";
 import { Container, Box, Typography } from "@mui/material";
 import SecondaryLayout from "@/layout/secondayLayout";
 
-const DashboardContent: React.FC = () => {
+const FilingContent: React.FC = () => {
 	return (
 		<SecondaryLayout>
 			<Container maxWidth="xl">
@@ -14,7 +14,7 @@ const DashboardContent: React.FC = () => {
 						gutterBottom
 						sx={{ color: "white" }}
 					>
-						Painel
+						Radicación
 					</Typography>
 
 					{/* Stats Cards */}
@@ -26,4 +26,4 @@ const DashboardContent: React.FC = () => {
 	);
 };
 
-export default DashboardContent;
+export default FilingContent;
