@@ -58,3 +58,35 @@ a {
 .page-container {
 	max-width: 100% !important;
 }
+
+.text-field {
+	// Ensure the border color stays red
+	.MuiOutlinedInput-root {
+		fieldset {
+			border-color: #0064ff !important;
+		}
+
+		&:hover fieldset {
+			border-color: #0064ff !important;
+		}
+
+		&.Mui-focused fieldset {
+			border-color: #0064ff !important;
+		}
+
+		// Set background color to blue for the input area
+		.MuiInputBase-input {
+			background-color: white !important;
+			color: black !important;
+		}
+	}
+
+	// Label color settings
+	.MuiInputLabel-root {
+		color: black !important;
+	}
+
+	.MuiInputLabel-root.Mui-focused {
+		color: black !important;
+	}
+}

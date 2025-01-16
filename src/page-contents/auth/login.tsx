@@ -81,6 +81,7 @@ export const LoginContent: React.FC = () => {
 
 					<form onSubmit={onSubmitLogin}>
 						<TextField
+							className="text-field"
 							variant="outlined"
 							label="Nombre de usuario"
 							type="text"
@@ -92,6 +93,7 @@ export const LoginContent: React.FC = () => {
 						/>
 
 						<TextField
+							className="text-field"
 							variant="outlined"
 							label="Contraseña"
 							type="password"
