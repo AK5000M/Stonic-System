@@ -39,40 +39,46 @@ const SideNav: React.FC<SideNavProps> = ({ collapsed, setCollapsed }) => {
 			route: "/dashboard",
 		},
 		{
-			id: "radicacion",
+			id: "filing",
 			title: "Radicación",
 			icon: <HighQualityOutlinedIcon />,
 			submenu: [
 				{
-					id: "radicacion-estandar",
+					id: "standard-filing",
 					title: "Radicación estándar",
 					icon: <DashboardOutlinedIcon />, // Add submenu icons
-					route: "/filing",
+					route: "/filing/standard",
 				},
 				{
-					id: "radicacion-correo",
-					title: "Radicación correo e.",
+					id: "email-filing",
+					title: "Radicación correo e",
 					icon: <HighQualityOutlinedIcon />,
 					route: "/filing/email",
 				},
 			],
 		},
 		{
-			id: "newMenu",
-			title: "New Menu",
+			id: "user",
+			title: "Usuarios",
 			icon: <HighQualityOutlinedIcon />,
 			submenu: [
 				{
-					id: "new-submenu",
-					title: "New submenu",
+					id: "user-manager",
+					title: " Administrar usuarios ",
 					icon: <DashboardOutlinedIcon />,
 					route: "/",
 				},
 				{
-					id: "new-submenu-2",
-					title: "New Submenu 2",
+					id: "user-profile",
+					title: "Administrar perfiles ",
 					icon: <HighQualityOutlinedIcon />,
-					route: "/filing/email",
+					route: "/",
+				},
+				{
+					id: "manage-operation",
+					title: "Administrar operaciones  ",
+					icon: <HighQualityOutlinedIcon />,
+					route: "/",
 				},
 			],
 		},

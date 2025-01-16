@@ -4,15 +4,15 @@ import { ToastContainer } from "react-toastify";
 import { Container, Box, Typography } from "@mui/material";
 import SecondaryLayout from "@/layout/secondayLayout";
 
-const FilingContent: React.FC = () => {
+const StandardFilingContent: React.FC = () => {
 	return (
 		<SecondaryLayout>
-			<Container maxWidth="xl">
+			<Container className="page-container">
 				<Box sx={{ mt: 3 }}>
 					<Typography
 						variant="h4"
 						gutterBottom
-						sx={{ color: "white" }}
+						sx={{ color: "#000" }}
 					>
 						Radicación
 					</Typography>
@@ -26,4 +26,4 @@ const FilingContent: React.FC = () => {
 	);
 };
 
-export default FilingContent;
+export default StandardFilingContent;

@@ -8,7 +8,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 				display: "flex",
 				flexDirection: "column",
 				minHeight: "100vh",
-				backgroundImage: 'url("/assets/backgound/auth-bg.jpg")',
+				backgroundImage: 'url("/assets/backgound/auth-bg.webp")',
 				backgroundSize: "cover",
 				backgroundPosition: "center",
 				backgroundRepeat: "no-repeat",
