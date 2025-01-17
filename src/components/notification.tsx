@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { IconButton, Badge, Menu, MenuItem, Typography } from "@mui/material";
-import NotificationsIcon from "@mui/icons-material/Notifications";
+import NotificationsActiveOutlinedIcon from "@mui/icons-material/NotificationsActiveOutlined";
 import { useRouter } from "next/router"; // Import from next/router for Next.js navigation
 
 interface NotificationProps {
@@ -45,7 +45,7 @@ const Notification: React.FC<NotificationProps> = ({ count, onClick }) => {
 				onClick={handleMenuOpen}
 			>
 				<Badge badgeContent={count} color="error">
-					<NotificationsIcon sx={{ color: "white" }} />
+					<NotificationsActiveOutlinedIcon sx={{ color: "black" }} />
 				</Badge>
 			</IconButton>
 

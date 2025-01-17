@@ -1,7 +1,7 @@
 // src/components/ProfileMenu.tsx
 import React, { useState } from "react";
 import { Box, Menu, MenuItem, IconButton } from "@mui/material";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { useAppDispatch } from "@/store";
 import { logoutUser } from "@/store/actions/authAction";
 
@@ -34,7 +34,7 @@ const ProfileMenu = () => {
 				aria-haspopup="true"
 				onClick={handleMenuOpen}
 			>
-				<AccountCircleIcon className="icon" />
+				<AccountCircleOutlinedIcon className="icon" />
 			</IconButton>
 
 			<Menu

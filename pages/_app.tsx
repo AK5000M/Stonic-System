@@ -18,6 +18,7 @@ import { store } from "@/store";
 import "../src/styles/globals.scss";
 import "../src/styles/layout.scss";
 import "../src/styles/topNav.scss";
+import "../src/styles/custom.scss";
 
 import { SignInURL } from "@/utils/routes";
 

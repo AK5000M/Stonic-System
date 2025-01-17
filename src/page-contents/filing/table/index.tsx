@@ -14,29 +14,26 @@ import {
 	IconButton,
 	TextField,
 	Stack,
+	Tooltip,
+	Menu,
+	MenuItem,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import InputAdornment from "@mui/material/InputAdornment";
-
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import MoreHorizOutlinedIcon from "@mui/icons-material/MoreHorizOutlined";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 
 interface DataTableProps {
 	data: any[];
 }
 
 const DataTable: React.FC<DataTableProps> = ({ data }) => {
-	const [page, setPage] = useState(0); // Current page
-	const [rowsPerPage, setRowsPerPage] = useState(10); // Rows per page
-	const [selectedRows, setSelectedRows] = useState<number[]>([]); // Track selected rows
-	const [searchTerm, setSearchTerm] = useState(""); // Search term
+	const [page, setPage] = useState(0);
+	const [rowsPerPage, setRowsPerPage] = useState(10);
+	const [selectedRows, setSelectedRows] = useState<number[]>([]);
+	const [searchTerm, setSearchTerm] = useState("");
+	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null); // State to manage menu anchor
 
 	if (!data || data.length === 0)
 		return <Typography>No data available</Typography>;
 
-	// Define static column headers
 	const columnHeaders = [
 		"#",
 		"Tipo radicado",
@@ -52,12 +49,10 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 		"Actions",
 	];
 
-	// Handle pagination change
 	const handleChangePage = (_: any, newPage: number) => {
 		setPage(newPage);
 	};
 
-	// Handle rows per page change
 	const handleChangeRowsPerPage = (
 		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
 	) => {
@@ -65,7 +60,6 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 		setPage(0);
 	};
 
-	// Filter data based on search term
 	const filteredData = data.filter(
 		(row) =>
 			row.tipoRadicado
@@ -74,13 +68,11 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 			row.nombreCliente?.toLowerCase().includes(searchTerm.toLowerCase())
 	);
 
-	// Paginated data
 	const paginatedData = filteredData.slice(
 		page * rowsPerPage,
 		page * rowsPerPage + rowsPerPage
 	);
 
-	// Handle individual row selection
 	const handleRowSelect = (index: number) => {
 		if (selectedRows.includes(index)) {
 			setSelectedRows(selectedRows.filter((row) => row !== index));
@@ -89,7 +81,6 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 		}
 	};
 
-	// Handle select all rows
 	const handleSelectAll = (checked: boolean) => {
 		if (checked) {
 			setSelectedRows(paginatedData.map((_, index) => index));
@@ -98,36 +89,58 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 		}
 	};
 
+	const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
+		setAnchorEl(event.currentTarget); // Set the anchor for the menu
+	};
+
+	const handleCloseMenu = () => {
+		setAnchorEl(null); // Close the menu
+	};
+
 	return (
-		<Box sx={{ mt: 3 }}>
-			{/* Search Field */}
-			<Stack direction="row" spacing={2} mb={2} sx={{ width: "350px" }}>
-				<TextField
-					className="text-field"
-					label="Buscar"
-					variant="outlined"
-					fullWidth
-					value={searchTerm}
-					onChange={(e) => setSearchTerm(e.target.value)}
-					placeholder="Buscar por Tipo radicado o Cliente"
-					InputProps={{
-						startAdornment: (
-							<InputAdornment position="start">
-								<SearchIcon />
-							</InputAdornment>
-						),
-					}}
-				/>
-			</Stack>
+		<Box
+			sx={{
+				mt: 3,
+				backgroundColor: "white",
+				borderRadius: "5px",
+				padding: "20px",
+			}}
+		>
+			<Box
+				sx={{
+					display: "flex",
+					justifyContent: "space-between",
+					alignItems: "center",
+				}}
+			>
+				<Typography variant="h6" gutterBottom sx={{ color: "#000" }}>
+					Listado de radicados
+				</Typography>
+				<Stack
+					direction="row"
+					spacing={2}
+					mb={2}
+					sx={{ width: "300px" }}
+				>
+					<TextField
+						className="table-seach-bar"
+						variant="outlined"
+						fullWidth
+						value={searchTerm}
+						onChange={(e) => setSearchTerm(e.target.value)}
+						placeholder="Buscar por Tipo radicado o Cliente"
+					/>
+				</Stack>
+			</Box>
 
 			<TableContainer component={Paper}>
 				<Table sx={{ minWidth: 650 }} aria-label="simple table">
-					<TableHead sx={{ backgroundColor: "#0064ff" }}>
+					<TableHead>
 						<TableRow>
 							<TableCell
 								sx={{
 									fontWeight: "bold",
-									color: "white",
+									color: "black",
 									textAlign: "center",
 								}}
 							>
@@ -153,8 +166,10 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 									key={header}
 									sx={{
 										fontWeight: "bold",
-										color: "white",
+										color: "#444",
 										textAlign: "center",
+										fontFamily: "Inter, sans-serif",
+										textTransform: "uppercase",
 									}}
 								>
 									{header}
@@ -170,7 +185,7 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 									"&:hover": { backgroundColor: "#f1f1f1" },
 									color: row.validDocument
 										? "#0064ff"
-										: "inherit", // Set text color to red for validDocument === true
+										: "inherit",
 								}}
 							>
 								<TableCell sx={{ textAlign: "center" }}>
@@ -180,7 +195,6 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 										onChange={() => handleRowSelect(index)}
 									/>
 								</TableCell>
-								{/* Render dynamic data for each column */}
 								{Object.entries(row).map(
 									([key, value], colIndex) => (
 										<TableCell
@@ -188,53 +202,84 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 											sx={{
 												fontSize: "16px",
 												textAlign: "center",
-												color:
-													key === "validDocument"
-														? (value as boolean)
-															? "#0064ff"
-															: "inherit"
-														: "inherit",
+												fontFamily: "Inter, sans-serif",
 											}}
 										>
-											{key === "validDocument"
-												? (value as boolean)
-													? "Valid"
-													: "Invalid"
-												: (value as React.ReactNode)}{" "}
+											<Typography
+												variant="body1"
+												sx={{
+													fontFamily:
+														"Inter, sans-serif",
+													textAlign: "center",
+													backgroundColor:
+														key === "validDocument"
+															? (value as boolean)
+																? "#17f91745"
+																: "#ff1f1f6b"
+															: "inherit",
+													borderRadius: "25px",
+													color:
+														key === "validDocument"
+															? (value as boolean)
+																? "green"
+																: "red"
+															: "inherit",
+												}}
+											>
+												{key === "validDocument"
+													? (value as boolean)
+														? "Valid"
+														: "Invalid"
+													: (value as React.ReactNode)}{" "}
+											</Typography>
 										</TableCell>
 									)
 								)}
-								<TableCell
-									sx={{
-										textAlign: "center",
-									}}
-								>
-									<IconButton
-										aria-label="show"
+								<TableCell sx={{ textAlign: "center" }}>
+									<Tooltip
+										title="MÁS ACCIONES"
+										arrow
+										placement="top"
+									>
+										<IconButton
+											aria-label="more"
+											sx={{ marginRight: 1 }}
+											onClick={handleOpenMenu}
+										>
+											<MoreHorizOutlinedIcon />
+										</IconButton>
+									</Tooltip>
+									<Menu
+										anchorEl={anchorEl}
+										open={Boolean(anchorEl)}
+										onClose={handleCloseMenu}
+										anchorOrigin={{
+											vertical: "top",
+											horizontal: "right",
+										}}
+										transformOrigin={{
+											vertical: "top",
+											horizontal: "right",
+										}}
 										sx={{
-											marginRight: 1,
+											boxShadow: "none", // Remove box-shadow
 										}}
 									>
-										<VisibilityIcon />
-									</IconButton>
-									<IconButton
-										aria-label="edit"
-										sx={{ marginRight: 1 }}
-									>
-										<MoreHorizOutlinedIcon />
-									</IconButton>
-									{/* <IconButton
-										color="error"
-										aria-label="delete"
-									>
-										<DeleteIcon />
-									</IconButton> */}
+										<MenuItem onClick={handleCloseMenu}>
+											Action 1
+										</MenuItem>
+										<MenuItem onClick={handleCloseMenu}>
+											Action 2
+										</MenuItem>
+										<MenuItem onClick={handleCloseMenu}>
+											Action 3
+										</MenuItem>
+									</Menu>
 								</TableCell>
 							</TableRow>
 						))}
 					</TableBody>
 				</Table>
-				{/* Pagination Component */}
 				<TablePagination
 					rowsPerPageOptions={[5, 10, 15]}
 					component="div"

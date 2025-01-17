@@ -1,11 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { AppBar, Toolbar } from "@mui/material";
 import ProfileMenu from "@/components/profileMenu";
 import Notification from "@/components/notification";
+import LanguageSelect from "@/components/languageSelect"; // Import the LanguageSelect component
 
 const TopNav: React.FC = () => {
+	const [selectedLanguage, setSelectedLanguage] = useState("en");
+
 	const handleNotificationClick = () => {
 		// Handle notification icon click if needed
+	};
+
+	const handleLanguageChange = (
+		event: React.ChangeEvent<{ value: unknown }>
+	) => {
+		setSelectedLanguage(event.target.value as string);
 	};
 
 	return (
@@ -18,7 +27,7 @@ const TopNav: React.FC = () => {
 			}}
 		>
 			<Toolbar>
-				{/* Push Notification and Profile Menu to the right */}
+				{/* Push Notification, Language Select, and Profile Menu to the right */}
 				<div
 					style={{
 						marginLeft: "auto",
@@ -27,7 +36,12 @@ const TopNav: React.FC = () => {
 						gap: "1rem",
 					}}
 				>
+					{/* <LanguageSelect
+						selectedLanguage={selectedLanguage}
+						onLanguageChange={handleLanguageChange}
+					/> */}
 					<Notification count={5} onClick={handleNotificationClick} />
+
 					<ProfileMenu />
 				</div>
 			</Toolbar>

@@ -1,6 +1,9 @@
+// StandardFilingContent.tsx
+
 import React, { useState, useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import { Container, Box, Typography, Button } from "@mui/material";
+
 import AddIcon from "@mui/icons-material/Add";
 
 import SecondaryLayout from "@/layout/secondayLayout";
@@ -9,6 +12,9 @@ import { validateAuthOperacionesUser } from "@/utils/auth";
 import { useAccessToken } from "@/utils/token";
 import { fetchStandardFilingData } from "@/store/actions/filingAction";
 
+import BreadcrumbsComponent from "@/components/breadcrumbs"; // Import BreadcrumbsComponent
+import Loading from "@/components/loading"; // Import Loading Component
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const StandardFilingContent: React.FC = () => {
@@ -16,6 +22,7 @@ const StandardFilingContent: React.FC = () => {
 	const [authData, setAuthData] = useState<any>(null);
 	const [error, setError] = useState<string | null>(null);
 	const [standardFiling, setStandardFiling] = useState<any[]>([]);
+	const [loading, setLoading] = useState<boolean>(false); // Add loading state
 
 	// Filter function to include specific fields
 	const filterStandardFilingData = (data: any[]) => {
@@ -36,6 +43,7 @@ const StandardFilingContent: React.FC = () => {
 
 	useEffect(() => {
 		if (decryptedToken != null) {
+			setLoading(true);
 			const fetchAuthorization = async () => {
 				try {
 					if (!decryptedToken) {
@@ -85,6 +93,8 @@ const StandardFilingContent: React.FC = () => {
 						"Error fetching standard filing data:",
 						error
 					);
+				} finally {
+					setLoading(false); // Set loading to false once data fetch is complete
 				}
 			};
 			fetchStandardFiling();
@@ -95,13 +105,13 @@ const StandardFilingContent: React.FC = () => {
 		<SecondaryLayout>
 			<Container className="page-container">
 				<Box sx={{ mt: 3 }}>
-					<Typography
-						variant="h4"
-						gutterBottom
-						sx={{ color: "#000" }}
-					>
-						Radicación
-					</Typography>
+					{/* Use BreadcrumbsComponent with dynamic breadcrumb data */}
+					<BreadcrumbsComponent
+						breadcrumbs={[
+							{ label: "Radicación", href: "/filing/standard" },
+						]}
+					/>
+
 					<Box sx={{ display: "flex", justifyContent: "flex-end" }}>
 						<Button
 							startIcon={<AddIcon />}
@@ -115,15 +125,18 @@ const StandardFilingContent: React.FC = () => {
 							CREAR RADICADO
 						</Button>
 					</Box>
-					{/* Check if data exists before rendering the table */}
-					{standardFiling.length > 0 ? (
+
+					{/* Show loading component when fetching data */}
+					{loading ? (
+						<Loading message="Cargando datos de radicados..." />
+					) : standardFiling.length > 0 ? (
 						<DataTable data={standardFiling} />
 					) : (
 						<Typography
 							variant="body1"
 							sx={{ mt: 2, textAlign: "center" }}
 						>
-							No data available to display.
+							No hay datos disponibles para mostrar.
 						</Typography>
 					)}
 				</Box>
