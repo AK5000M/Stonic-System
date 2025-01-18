@@ -34,7 +34,9 @@ const ProfileMenu = () => {
 				aria-haspopup="true"
 				onClick={handleMenuOpen}
 			>
-				<AccountCircleOutlinedIcon className="icon" />
+				<AccountCircleOutlinedIcon
+					sx={{ color: "#0064ff", fontSize: "30px" }}
+				/>
 			</IconButton>
 
 			<Menu

@@ -2,6 +2,7 @@ import React, { ReactNode, useState } from "react";
 import { Box, CssBaseline, Container } from "@mui/material";
 import TopNav from "@/components/topNav";
 import SideNav from "@/components/sideNav";
+import Footer from "@/components/footer";
 
 interface SecondaryLayoutProps {
 	children: ReactNode;
@@ -37,6 +38,8 @@ const SecondaryLayout: React.FC<SecondaryLayoutProps> = ({ children }) => {
 						{children}
 					</Container>
 				</Box>
+
+				<Footer />
 			</Box>
 		</Box>
 	);

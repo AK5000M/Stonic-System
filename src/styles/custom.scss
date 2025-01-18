@@ -1,0 +1,15 @@
+.add-filing-form {
+	.form-row {
+		display: flex;
+		gap: 30px;
+		margin-bottom: 30px;
+
+		.form-column {
+			flex: 1;
+
+			.full-width {
+				flex: 100%;
+			}
+		}
+	}
+}

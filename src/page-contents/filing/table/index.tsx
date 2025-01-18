@@ -19,6 +19,14 @@ import {
 	MenuItem,
 } from "@mui/material";
 import MoreHorizOutlinedIcon from "@mui/icons-material/MoreHorizOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import PrintOutlinedIcon from "@mui/icons-material/PrintOutlined";
+import SwapHorizOutlinedIcon from "@mui/icons-material/SwapHorizOutlined";
+import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
+import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
+import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
+import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 
 interface DataTableProps {
 	data: any[];
@@ -203,6 +211,9 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 												fontSize: "16px",
 												textAlign: "center",
 												fontFamily: "Inter, sans-serif",
+												color: row.validDocument
+													? "#0064ff"
+													: "inherit",
 											}}
 										>
 											<Typography
@@ -261,18 +272,62 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 											vertical: "top",
 											horizontal: "right",
 										}}
-										sx={{
-											boxShadow: "none", // Remove box-shadow
-										}}
 									>
 										<MenuItem onClick={handleCloseMenu}>
-											Action 1
+											<VisibilityOutlinedIcon
+												fontSize="small"
+												sx={{ marginRight: 1 }}
+											/>
+											View
 										</MenuItem>
 										<MenuItem onClick={handleCloseMenu}>
-											Action 2
+											<EditOutlinedIcon
+												fontSize="small"
+												sx={{ marginRight: 1 }}
+											/>
+											Edit
 										</MenuItem>
 										<MenuItem onClick={handleCloseMenu}>
-											Action 3
+											<PrintOutlinedIcon
+												fontSize="small"
+												sx={{ marginRight: 1 }}
+											/>
+											Print Stickers
+										</MenuItem>
+										<MenuItem onClick={handleCloseMenu}>
+											<SwapHorizOutlinedIcon
+												fontSize="small"
+												sx={{ marginRight: 1 }}
+											/>
+											Reassign
+										</MenuItem>
+										<MenuItem onClick={handleCloseMenu}>
+											<CloudUploadOutlinedIcon
+												fontSize="small"
+												sx={{ marginRight: 1 }}
+											/>
+											Upload Main Image
+										</MenuItem>
+										<MenuItem onClick={handleCloseMenu}>
+											<FileCopyOutlinedIcon
+												fontSize="small"
+												sx={{ marginRight: 1 }}
+											/>
+											Copy to Informed
+										</MenuItem>
+										<MenuItem onClick={handleCloseMenu}>
+											<InsertDriveFileOutlinedIcon
+												fontSize="small"
+												sx={{ marginRight: 1 }}
+											/>
+											Associate Template
+										</MenuItem>
+										<MenuItem onClick={handleCloseMenu}>
+											<FolderOutlinedIcon
+												fontSize="small"
+												sx={{ marginRight: 1 }}
+											/>
+											Include in File
 										</MenuItem>
 									</Menu>
 								</TableCell>

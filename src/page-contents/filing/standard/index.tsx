@@ -11,13 +11,15 @@ import DataTable from "../table/index";
 import { validateAuthOperacionesUser } from "@/utils/auth";
 import { useAccessToken } from "@/utils/token";
 import { fetchStandardFilingData } from "@/store/actions/filingAction";
+import { useRouter } from "next/router";
 
-import BreadcrumbsComponent from "@/components/breadcrumbs"; // Import BreadcrumbsComponent
-import Loading from "@/components/loading"; // Import Loading Component
+import BreadcrumbsComponent from "@/components/breadcrumbs";
+import Loading from "@/components/loading";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const StandardFilingContent: React.FC = () => {
+	const router = useRouter();
 	const { decryptedToken } = useAccessToken();
 	const [authData, setAuthData] = useState<any>(null);
 	const [error, setError] = useState<string | null>(null);
@@ -73,19 +75,19 @@ const StandardFilingContent: React.FC = () => {
 					const params = "";
 					const authorization = decryptedToken;
 
-					const data = await fetchStandardFilingData(
+					const data: any = await fetchStandardFilingData(
 						endpoint,
 						params,
 						authorization
 					);
 
-					console.log({ data });
-
 					if (data?.data) {
+						setLoading(false);
 						// Apply filtering before setting state
 						const filteredData = filterStandardFilingData(
 							data.data
 						);
+
 						setStandardFiling(filteredData);
 					}
 				} catch (error) {
@@ -94,12 +96,17 @@ const StandardFilingContent: React.FC = () => {
 						error
 					);
 				} finally {
-					setLoading(false); // Set loading to false once data fetch is complete
+					setLoading(false);
 				}
 			};
 			fetchStandardFiling();
 		}
 	}, [authData]);
+
+	// Add New Filing
+	const onAddNewFiling = () => {
+		router.push("/filing/create");
+	};
 
 	return (
 		<SecondaryLayout>
@@ -114,9 +121,10 @@ const StandardFilingContent: React.FC = () => {
 
 					<Box sx={{ display: "flex", justifyContent: "flex-end" }}>
 						<Button
+							className="main-btn"
+							onClick={() => onAddNewFiling()}
 							startIcon={<AddIcon />}
 							sx={{
-								backgroundColor: "#0064ff",
 								px: 3,
 								py: 1,
 								borderRadius: "25px",

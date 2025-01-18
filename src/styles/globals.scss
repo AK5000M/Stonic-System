@@ -32,6 +32,24 @@ a {
 	text-decoration: none;
 }
 
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: "Inter", sans-serif !important;
+}
+
+p {
+	line-height: 28px !important;
+}
+
+label {
+	line-height: 1.5rem !important;
+}
+
 @media (prefers-color-scheme: dark) {
 	html {
 		color-scheme: dark;
@@ -41,11 +59,14 @@ a {
 .main-btn {
 	background-color: #0064ff !important;
 	color: white !important;
-	font-size: 18px !important;
+	font-size: 16px !important;
 	font-weight: 500 !important;
 	border-radius: 25px !important;
-	padding-top: 10px !important;
-	padding-bottom: 10px !important;
+	padding-top: 7px !important;
+	padding-bottom: 7px !important;
+	min-height: 51.5px !important;
+	font-family: "Inter", sans-serif !important;
+	line-height: 28px !important;
 }
 
 // *
@@ -58,7 +79,6 @@ a {
 }
 
 .text-field {
-	// Ensure the border color stays red
 	.MuiOutlinedInput-root {
 		fieldset {
 			border-color: #ccc !important;
@@ -72,15 +92,99 @@ a {
 			border-color: #969595 !important;
 		}
 
-		// Set background color to blue for the input area
 		.MuiInputBase-input {
 			background-color: white !important;
 			color: black !important;
-			padding: 13px 15px !important;
 		}
 	}
 
-	// Label color settings
+	.MuiInputLabel-root {
+		color: black !important;
+	}
+
+	.MuiInputLabel-root.Mui-focused {
+		color: black !important;
+	}
+}
+
+.select-field {
+	.MuiOutlinedInput-root {
+		fieldset {
+			border-color: #ccc !important;
+		}
+
+		&:hover fieldset {
+			border-color: #969595 !important;
+		}
+
+		&.Mui-focused fieldset {
+			border-color: #969595 !important;
+		}
+
+		.MuiInputBase-input {
+			background-color: white !important;
+			color: black !important;
+		}
+	}
+
+	.MuiInputLabel-root {
+		color: black !important;
+	}
+
+	.MuiInputLabel-root.Mui-focused {
+		color: black !important;
+	}
+}
+
+// Global Switch Styles
+.MuiSwitch-root {
+	.MuiSwitch-track {
+		background-color: #ccc;
+	}
+
+	.MuiSwitch-switchBase.Mui-checked {
+		color: #0064ff;
+
+		+ .MuiSwitch-track {
+			background-color: #0064ff;
+		}
+	}
+
+	.MuiSwitch-switchBase.Mui-checked:hover {
+		+ .MuiSwitch-track {
+			background-color: darken(#0064ff, 10%);
+		}
+	}
+
+	.MuiSwitch-switchBase {
+		color: #fff;
+
+		&:hover + .MuiSwitch-track {
+			background-color: darken(#ccc, 10%);
+		}
+	}
+}
+
+.date-field {
+	.MuiOutlinedInput-root {
+		fieldset {
+			border-color: #ccc !important;
+		}
+
+		&:hover fieldset {
+			border-color: #969595 !important;
+		}
+
+		&.Mui-focused fieldset {
+			border-color: #969595 !important;
+		}
+
+		.MuiInputBase-input {
+			background-color: white !important;
+			color: black !important;
+		}
+	}
+
 	.MuiInputLabel-root {
 		color: black !important;
 	}
@@ -120,5 +224,30 @@ a {
 
 	.MuiInputLabel-root.Mui-focused {
 		color: black !important;
+	}
+}
+
+// SideNav Menu styles
+.side-nav-menu {
+	svg {
+		color: rgb(71 85 105) !important;
+		font-size: 1.2rem !important;
+		font-weight: 500 !important;
+		line-height: 1.25rem !important;
+	}
+	span {
+		color: rgb(71 85 105) !important;
+		font-size: 1rem !important;
+		font-weight: 500 !important;
+		line-height: 1.25rem !important;
+	}
+}
+
+.side-nav-submenu {
+	span {
+		color: rgb(71 85 105) !important;
+		font-size: 1rem !important;
+		font-weight: 500 !important;
+		line-height: 1.25rem !important;
 	}
 }

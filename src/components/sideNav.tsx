@@ -18,6 +18,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import PeopleOutlineOutlinedIcon from "@mui/icons-material/PeopleOutlineOutlined";
 
 interface SideNavProps {
 	collapsed: boolean;
@@ -60,7 +61,7 @@ const SideNav: React.FC<SideNavProps> = ({ collapsed, setCollapsed }) => {
 		{
 			id: "user",
 			title: "Usuarios",
-			icon: <HighQualityOutlinedIcon />,
+			icon: <PeopleOutlineOutlinedIcon />,
 			submenu: [
 				{
 					id: "user-manager",
@@ -177,6 +178,7 @@ const SideNav: React.FC<SideNavProps> = ({ collapsed, setCollapsed }) => {
 										  )
 										: handleMenuClick(menu.id)
 								}
+								className="side-nav-menu"
 							>
 								<ListItemIcon style={{ minWidth: "30px" }}>
 									{menu.icon}
@@ -205,6 +207,7 @@ const SideNav: React.FC<SideNavProps> = ({ collapsed, setCollapsed }) => {
 								{menu.submenu.map((submenu) => (
 									<ListItem disablePadding key={submenu.id}>
 										<ListItemButton
+											className="side-nav-submenu"
 											sx={{ pl: 4 }}
 											selected={
 												selectedItem === submenu.id

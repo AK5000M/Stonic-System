@@ -52,7 +52,7 @@ const DataTable: React.FC<DataTableProps> = ({
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{data.map((row, index) => (
+						{data.map((row: any, index) => (
 							<TableRow key={index}>
 								{columns.map((col) => (
 									<TableCell key={col}>{row[col]}</TableCell>

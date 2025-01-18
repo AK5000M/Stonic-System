@@ -45,7 +45,9 @@ const Notification: React.FC<NotificationProps> = ({ count, onClick }) => {
 				onClick={handleMenuOpen}
 			>
 				<Badge badgeContent={count} color="error">
-					<NotificationsActiveOutlinedIcon sx={{ color: "black" }} />
+					<NotificationsActiveOutlinedIcon
+						sx={{ color: "#0064ff" }}
+					/>
 				</Badge>
 			</IconButton>
 

@@ -24,10 +24,10 @@ const TopNav: React.FC = () => {
 			sx={{
 				width: "100%",
 				marginLeft: "0px",
+				px: 4,
 			}}
 		>
 			<Toolbar>
-				{/* Push Notification, Language Select, and Profile Menu to the right */}
 				<div
 					style={{
 						marginLeft: "auto",

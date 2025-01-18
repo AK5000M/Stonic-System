@@ -1,6 +1,12 @@
 import React, { useState } from "react";
-
-import { Container, Box, Typography, TextField, Button } from "@mui/material";
+import {
+	Container,
+	Box,
+	Typography,
+	TextField,
+	Button,
+	CircularProgress,
+} from "@mui/material";
 import { useAppDispatch } from "@/store";
 import { login } from "@/store/actions/authAction";
 import Layout from "@/layout/layout";
@@ -12,10 +18,16 @@ export const LoginContent: React.FC = () => {
 
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
+	const [isLoading, setIsLoading] = useState(false); // State to track loading
 
-	const onSubmitLogin = (event: React.FormEvent) => {
+	const onSubmitLogin = async (event: React.FormEvent) => {
 		event.preventDefault();
-		dispatch(login(username, password));
+		setIsLoading(true); // Set loading to true when submitting
+		try {
+			await dispatch(login(username, password)); // Assuming login is an async function
+		} finally {
+			setIsLoading(false); // Reset loading state
+		}
 	};
 
 	return (
@@ -109,9 +121,14 @@ export const LoginContent: React.FC = () => {
 							type="submit"
 							fullWidth
 							variant="contained"
-							sx={{ mt: 3 }}
+							sx={{ mt: 3, minHeight: "51.5px" }}
+							disabled={isLoading}
 						>
-							Iniciar sesión
+							{isLoading ? (
+								<CircularProgress size={24} color="inherit" />
+							) : (
+								"Iniciar sesión"
+							)}
 						</Button>
 					</form>
 				</Box>
