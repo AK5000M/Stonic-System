@@ -27,17 +27,19 @@ import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
+import { useRouter } from "next/router";
 
 interface DataTableProps {
 	data: any[];
 }
 
 const DataTable: React.FC<DataTableProps> = ({ data }) => {
+	const router = useRouter();
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [selectedRows, setSelectedRows] = useState<number[]>([]);
 	const [searchTerm, setSearchTerm] = useState("");
-	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null); // State to manage menu anchor
+	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
 	if (!data || data.length === 0)
 		return <Typography>No data available</Typography>;
@@ -98,11 +100,16 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 	};
 
 	const handleOpenMenu = (event: React.MouseEvent<HTMLElement>) => {
-		setAnchorEl(event.currentTarget); // Set the anchor for the menu
+		setAnchorEl(event.currentTarget);
 	};
 
 	const handleCloseMenu = () => {
-		setAnchorEl(null); // Close the menu
+		setAnchorEl(null);
+	};
+
+	const handleEditFiling = (row: any) => {
+		setAnchorEl(null);
+		router.push(`/filing/edit/${row?.id}`);
 	};
 
 	return (
@@ -219,8 +226,6 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 											<Typography
 												variant="body1"
 												sx={{
-													fontFamily:
-														"Inter, sans-serif",
 													textAlign: "center",
 													backgroundColor:
 														key === "validDocument"
@@ -241,7 +246,7 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 													? (value as boolean)
 														? "Valid"
 														: "Invalid"
-													: (value as React.ReactNode)}{" "}
+													: (value as React.ReactNode)}
 											</Typography>
 										</TableCell>
 									)
@@ -280,7 +285,11 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 											/>
 											View
 										</MenuItem>
-										<MenuItem onClick={handleCloseMenu}>
+										<MenuItem
+											onClick={() =>
+												handleEditFiling(row)
+											}
+										>
 											<EditOutlinedIcon
 												fontSize="small"
 												sx={{ marginRight: 1 }}
