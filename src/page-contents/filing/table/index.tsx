@@ -125,6 +125,12 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 		router.push(`/filing/reassign/${row?.id}`); // Use the id instead of encryptId
 	};
 
+	// Upload Main Image Redirect
+	const handleUploadImage = (row: any) => {
+		setAnchorEl(null);
+		router.push(`/filing/upload/${row?.id}`);
+	};
+
 	return (
 		<Box
 			sx={{
@@ -414,7 +420,11 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 											Reassign
 										</MenuItem>
 
-										<MenuItem>
+										<MenuItem
+											onClick={() =>
+												handleUploadImage(row)
+											}
+										>
 											<CloudUploadOutlinedIcon
 												fontSize="small"
 												sx={{ marginRight: 1 }}
