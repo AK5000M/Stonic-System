@@ -40,7 +40,7 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 	const [selectedRows, setSelectedRows] = useState<number[]>([]);
 	const [searchTerm, setSearchTerm] = useState("");
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
+	console.log({ data });
 	if (!data || data.length === 0)
 		return <Typography>No data available</Typography>;
 
@@ -72,9 +72,9 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 
 	const filteredData = data.filter(
 		(row) =>
-			row.tipoRadicado
-				?.toLowerCase()
-				.includes(searchTerm.toLowerCase()) ||
+			row.TipoRadicado?.toLowerCase().includes(
+				searchTerm.toLowerCase()
+			) ||
 			row.nombreCliente?.toLowerCase().includes(searchTerm.toLowerCase())
 	);
 
@@ -110,13 +110,19 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 	// Edit Filing Redirect
 	const handleEditFiling = (row: any) => {
 		setAnchorEl(null);
-		router.push(`/filing/edit/${row?.encryptId}`);
+		router.push(`/filing/edit/${row?.id}`); // Use the id instead of encryptId
 	};
 
 	// View Filing Redirect
 	const handleViewFiling = (row: any) => {
 		setAnchorEl(null);
-		router.push(`/filing/detail/${row?.encryptId}`);
+		router.push(`/filing/detail/${row?.id}`); // Use the id instead of encryptId
+	};
+
+	// Reassign Filing Redirect
+	const handleReassign = (row: any) => {
+		setAnchorEl(null);
+		router.push(`/filing/reassign/${row?.id}`); // Use the id instead of encryptId
 	};
 
 	return (
@@ -205,59 +211,148 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 								key={index}
 								sx={{
 									"&:hover": { backgroundColor: "#f1f1f1" },
-									color: row.validDocument
-										? "#0064ff"
-										: "inherit",
 								}}
 							>
-								<TableCell sx={{ textAlign: "center" }}>
+								<TableCell
+									sx={{
+										textAlign: "center",
+									}}
+								>
 									<Checkbox
 										color="default"
 										checked={selectedRows.includes(index)}
 										onChange={() => handleRowSelect(index)}
 									/>
 								</TableCell>
-								{Object.entries(row).map(
-									([key, value], colIndex) => (
-										<TableCell
-											key={colIndex}
-											sx={{
-												fontSize: "16px",
-												textAlign: "center",
-												fontFamily: "Inter, sans-serif",
-												color: row.validDocument
-													? "#0064ff"
-													: "inherit",
-											}}
-										>
-											<Typography
-												variant="body1"
-												sx={{
-													textAlign: "center",
-													backgroundColor:
-														key === "validDocument"
-															? (value as boolean)
-																? "#17f91745"
-																: "#ff1f1f6b"
-															: "inherit",
-													borderRadius: "25px",
-													color:
-														key === "validDocument"
-															? (value as boolean)
-																? "green"
-																: "red"
-															: "inherit",
-												}}
-											>
-												{key === "validDocument"
-													? (value as boolean)
-														? "Valid"
-														: "Invalid"
-													: (value as React.ReactNode)}
-											</Typography>
-										</TableCell>
-									)
-								)}
+								<TableCell
+									sx={{
+										textAlign: "center",
+										color: row.validDocument
+											? "#0064ff"
+											: "inherit",
+										fontSize: "16px",
+									}}
+								>
+									{row.id}
+								</TableCell>
+								<TableCell
+									sx={{
+										textAlign: "center",
+										color: row.validDocument
+											? "#0064ff"
+											: "inherit",
+										fontSize: "16px",
+									}}
+								>
+									{row.TipoRadicado}
+								</TableCell>
+								<TableCell
+									sx={{
+										textAlign: "center",
+										color: row.validDocument
+											? "#0064ff"
+											: "inherit",
+										fontSize: "16px",
+									}}
+								>
+									{row.numeroRadiRadicado}
+								</TableCell>
+								<TableCell
+									sx={{
+										textAlign: "center",
+										color: row.validDocument
+											? "#0064ff"
+											: "inherit",
+										fontSize: "16px",
+									}}
+								>
+									{row.creacionRadiRadicado}
+								</TableCell>
+								<TableCell
+									sx={{
+										textAlign: "center",
+										color: row.validDocument
+											? "#0064ff"
+											: "inherit",
+										fontSize: "16px",
+									}}
+								>
+									{row.nombreCliente}
+								</TableCell>
+								<TableCell
+									sx={{
+										textAlign: "center",
+										color: row.validDocument
+											? "#0064ff"
+											: "inherit",
+										fontSize: "16px",
+									}}
+								>
+									{row.asuntoRadiRadicado}
+								</TableCell>
+								<TableCell
+									sx={{
+										textAlign: "center",
+										color: row.validDocument
+											? "#0064ff"
+											: "inherit",
+										fontSize: "16px",
+									}}
+								>
+									{row.nombreTipoDocumental}
+								</TableCell>
+								<TableCell
+									sx={{
+										textAlign: "center",
+										color: row.validDocument
+											? "#0064ff"
+											: "inherit",
+										fontSize: "16px",
+									}}
+								>
+									{row.fechaVencimientoRadiRadicados}
+								</TableCell>
+								<TableCell
+									sx={{
+										textAlign: "center",
+										color: row.validDocument
+											? "#0064ff"
+											: "inherit",
+										fontSize: "16px",
+									}}
+								>
+									{row.prioridadRadicados}
+								</TableCell>
+								<TableCell sx={{ textAlign: "center" }}>
+									<Typography
+										variant="body1"
+										sx={{
+											textAlign: "center",
+											backgroundColor: row.validDocument
+												? "#17f91745"
+												: "#ff1f1f6b",
+											borderRadius: "25px",
+											color: row.validDocument
+												? "green"
+												: "red",
+										}}
+									>
+										{row.validDocument
+											? "Valid"
+											: "Invalid"}
+									</Typography>
+								</TableCell>
+								<TableCell
+									sx={{
+										textAlign: "center",
+										color: row.validDocument
+											? "#0064ff"
+											: "inherit",
+										fontSize: "16px",
+									}}
+								>
+									{row.statusText}
+								</TableCell>
 								<TableCell sx={{ textAlign: "center" }}>
 									<Tooltip
 										title="MÁS ACCIONES"
@@ -308,47 +403,47 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 											/>
 											Edit
 										</MenuItem>
-										<MenuItem onClick={handleCloseMenu}>
-											<PrintOutlinedIcon
-												fontSize="small"
-												sx={{ marginRight: 1 }}
-											/>
-											Print Stickers
-										</MenuItem>
-										<MenuItem onClick={handleCloseMenu}>
+
+										<MenuItem
+											onClick={() => handleReassign(row)}
+										>
 											<SwapHorizOutlinedIcon
 												fontSize="small"
 												sx={{ marginRight: 1 }}
 											/>
 											Reassign
 										</MenuItem>
-										<MenuItem onClick={handleCloseMenu}>
+
+										<MenuItem>
 											<CloudUploadOutlinedIcon
 												fontSize="small"
 												sx={{ marginRight: 1 }}
 											/>
-											Upload Main Image
+											Upload File
 										</MenuItem>
-										<MenuItem onClick={handleCloseMenu}>
+
+										<MenuItem>
 											<FileCopyOutlinedIcon
 												fontSize="small"
 												sx={{ marginRight: 1 }}
 											/>
-											Copy to Informed
+											Copy
 										</MenuItem>
-										<MenuItem onClick={handleCloseMenu}>
+
+										<MenuItem>
 											<InsertDriveFileOutlinedIcon
 												fontSize="small"
 												sx={{ marginRight: 1 }}
 											/>
-											Associate Template
+											Open File
 										</MenuItem>
-										<MenuItem onClick={handleCloseMenu}>
+
+										<MenuItem>
 											<FolderOutlinedIcon
 												fontSize="small"
 												sx={{ marginRight: 1 }}
 											/>
-											Include in File
+											Move
 										</MenuItem>
 									</Menu>
 								</TableCell>
@@ -356,16 +451,17 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 						))}
 					</TableBody>
 				</Table>
-				<TablePagination
-					rowsPerPageOptions={[5, 10, 15]}
-					component="div"
-					count={filteredData.length}
-					rowsPerPage={rowsPerPage}
-					page={page}
-					onPageChange={handleChangePage}
-					onRowsPerPageChange={handleChangeRowsPerPage}
-				/>
 			</TableContainer>
+
+			<TablePagination
+				rowsPerPageOptions={[5, 10, 25]}
+				component="div"
+				count={filteredData.length}
+				rowsPerPage={rowsPerPage}
+				page={page}
+				onPageChange={handleChangePage}
+				onRowsPerPageChange={handleChangeRowsPerPage}
+			/>
 		</Box>
 	);
 };
