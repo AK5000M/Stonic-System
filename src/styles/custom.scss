@@ -13,3 +13,13 @@
 		}
 	}
 }
+
+.filing-table-main-actions {
+	& > div {
+		box-shadow: -1px 0px 4px 1px rgb(213 213 213) !important;
+
+		& > ul {
+			border-radius: 5px;
+		}
+	}
+}

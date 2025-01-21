@@ -116,19 +116,25 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 	// View Filing Redirect
 	const handleViewFiling = (row: any) => {
 		setAnchorEl(null);
-		router.push(`/filing/detail/${row?.id}`); // Use the id instead of encryptId
+		router.push(`/filing/detail/${row?.encryptId}`); // Use the id instead of encryptId
 	};
 
 	// Reassign Filing Redirect
 	const handleReassign = (row: any) => {
 		setAnchorEl(null);
-		router.push(`/filing/reassign/${row?.id}`); // Use the id instead of encryptId
+		router.push(`/filing/reassign/${row?.encryptId}`); // Use the id instead of encryptId
 	};
 
 	// Upload Main Image Redirect
 	const handleUploadImage = (row: any) => {
 		setAnchorEl(null);
-		router.push(`/filing/upload/${row?.id}`);
+		router.push(`/filing/upload/${row?.encryptId}`);
+	};
+
+	// Copy Filing Redirect
+	const handleCopyFiling = (row: any) => {
+		setAnchorEl(null);
+		router.push(`/filing/copy/${row?.encryptId}`);
 	};
 
 	return (
@@ -373,6 +379,7 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 											<MoreHorizOutlinedIcon />
 										</IconButton>
 									</Tooltip>
+
 									<Menu
 										anchorEl={anchorEl}
 										open={Boolean(anchorEl)}
@@ -385,6 +392,7 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 											vertical: "top",
 											horizontal: "right",
 										}}
+										className="filing-table-main-actions"
 									>
 										<MenuItem
 											onClick={() =>
@@ -432,7 +440,11 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 											Upload File
 										</MenuItem>
 
-										<MenuItem>
+										<MenuItem
+											onClick={() =>
+												handleCopyFiling(row)
+											}
+										>
 											<FileCopyOutlinedIcon
 												fontSize="small"
 												sx={{ marginRight: 1 }}
