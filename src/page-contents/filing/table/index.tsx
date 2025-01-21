@@ -137,6 +137,18 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 		router.push(`/filing/copy/${row?.encryptId}`);
 	};
 
+	// Template filing Redirect
+	const handleTemplateFiling = (row: any) => {
+		setAnchorEl(null);
+		router.push(`/filing/template/${row?.encryptId}`);
+	};
+
+	// Include File Redirect
+	const handleIncludeFileFiling = (row: any) => {
+		setAnchorEl(null);
+		router.push(`/filing/include/${row?.encryptId}`);
+	};
+
 	return (
 		<Box
 			sx={{
@@ -452,7 +464,11 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 											Copy
 										</MenuItem>
 
-										<MenuItem>
+										<MenuItem
+											onClick={() =>
+												handleTemplateFiling(row)
+											}
+										>
 											<InsertDriveFileOutlinedIcon
 												fontSize="small"
 												sx={{ marginRight: 1 }}
@@ -460,7 +476,11 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 											Open File
 										</MenuItem>
 
-										<MenuItem>
+										<MenuItem
+											onClick={() =>
+												handleIncludeFileFiling(row)
+											}
+										>
 											<FolderOutlinedIcon
 												fontSize="small"
 												sx={{ marginRight: 1 }}
