@@ -107,9 +107,16 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 		setAnchorEl(null);
 	};
 
+	// Edit Filing Redirect
 	const handleEditFiling = (row: any) => {
 		setAnchorEl(null);
-		router.push(`/filing/edit/${row?.id}`);
+		router.push(`/filing/edit/${row?.encryptId}`);
+	};
+
+	// View Filing Redirect
+	const handleViewFiling = (row: any) => {
+		setAnchorEl(null);
+		router.push(`/filing/detail/${row?.encryptId}`);
 	};
 
 	return (
@@ -278,13 +285,18 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 											horizontal: "right",
 										}}
 									>
-										<MenuItem onClick={handleCloseMenu}>
+										<MenuItem
+											onClick={() =>
+												handleViewFiling(row)
+											}
+										>
 											<VisibilityOutlinedIcon
 												fontSize="small"
 												sx={{ marginRight: 1 }}
 											/>
 											View
 										</MenuItem>
+
 										<MenuItem
 											onClick={() =>
 												handleEditFiling(row)

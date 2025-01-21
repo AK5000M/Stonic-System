@@ -29,6 +29,7 @@ const StandardFilingContent: React.FC = () => {
 	// Filter function to include specific fields
 	const filterStandardFilingData = (data: any[]) => {
 		return data.map((item) => ({
+			encryptId: item.data[0],
 			id: item.id,
 			TipoRadicado: item.TipoRadicado,
 			numeroRadiRadicado: item.numeroRadiRadicado,
