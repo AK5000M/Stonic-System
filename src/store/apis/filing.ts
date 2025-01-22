@@ -41,3 +41,44 @@ export const filingGetApi = async (
 		throw error;
 	}
 };
+
+// Function to fetch service data
+export const ServiceTypeGetApi = async (endpoint: string) => {
+	try {
+		const response = await axios.get(endpoint);
+		return response;
+	} catch (error: any) {
+		console.error("Error fetch serviceType in:", error.message);
+		throw error;
+	}
+};
+
+// Function to fetch request type
+export const RequestTypeGetApi = async (endpoint: string) => {
+	try {
+		const response = await axios.get(endpoint);
+		return response;
+	} catch (error: any) {
+		console.error("Error fetch requestType in:", error.message);
+		throw error;
+	}
+};
+
+// Function to get general list
+export const GeneralListGetApi = async (
+	endpoint: string,
+	authorization: string | null
+) => {
+	try {
+		const response = await axios.get(endpoint, {
+			headers: {
+				Authorization: `Bearer ${authorization}`,
+				"Content-Type": "application/x-www-form-urlencoded",
+				language: localStorage.getItem("language") || "es",
+			},
+		});
+		return response.data;
+	} catch (error: any) {
+		console.error("Error fetch requestType in:", error.message);
+	}
+};

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	Box,
 	TextField,
@@ -14,10 +14,38 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useTheme } from "@mui/material/styles";
 
+interface GeneralListProps {
+	generalLists: any;
+}
+
+interface DataRadicatedItemProps {
+	map(
+		arg0: (item: DataRadicatedItemProps) => React.JSX.Element
+	): React.ReactNode;
+	length: number;
+	id?: number;
+	val?: string;
+}
+
+interface DateNumRadicatedItemProps {
+	map(
+		arg0: (item: DateNumRadicatedItemProps) => React.JSX.Element
+	): React.ReactNode;
+	length: number;
+	id?: number;
+	val?: string;
+}
 // Example options for Select fields
 const tipoRadicadoOptions = ["Tipo 1", "Tipo 2", "Tipo 3"];
 
-const FilingInformationTypeForm: React.FC = () => {
+const FilingInformationTypeForm: React.FC<GeneralListProps> = (
+	generalLists
+) => {
+	const [dataRadicated, setDataRadicated] = useState<DataRadicatedItemProps>(
+		[]
+	);
+	const [dateNumRadicated, setDateNumRadicated] =
+		useState<DateNumRadicatedItemProps>([]);
 	const theme = useTheme();
 
 	const [formData, setFormData] = useState({
@@ -26,6 +54,13 @@ const FilingInformationTypeForm: React.FC = () => {
 		asunto: "",
 		fechaVencimiento: null,
 	});
+
+	useEffect(() => {
+		if (generalLists != null) {
+			setDataRadicated(generalLists.generalLists?.dataRadicado);
+			setDateNumRadicated(generalLists.generalLists?.dataNumRadicados);
+		}
+	}, [generalLists]);
 
 	// Handle form field changes
 	const handleInputChange = (event: any) => {
@@ -76,11 +111,20 @@ const FilingInformationTypeForm: React.FC = () => {
 								name="tipoRadicado"
 								label="Seleccione el tipo radicado"
 							>
-								{tipoRadicadoOptions.map((option, index) => (
-									<MenuItem key={index} value={option}>
-										{option}
-									</MenuItem>
-								))}
+								{dataRadicated && dataRadicated.length > 0 ? (
+									dataRadicated.map(
+										(item: DataRadicatedItemProps) => (
+											<MenuItem
+												key={item.id}
+												value={item.id}
+											>
+												{item.val}
+											</MenuItem>
+										)
+									)
+								) : (
+									<p>No data available</p>
+								)}
 							</Select>
 						</FormControl>
 					</div>
@@ -109,12 +153,33 @@ const FilingInformationTypeForm: React.FC = () => {
 								onChange={handleInputChange}
 								name="asunto"
 								label="Asociación de radicados"
+								MenuProps={{
+									PaperProps: {
+										style: {
+											maxHeight: 350,
+											overflowY: "auto",
+										},
+									},
+								}}
 							>
-								{tipoRadicadoOptions.map((option, index) => (
-									<MenuItem key={index} value={option}>
-										{option}
-									</MenuItem>
-								))}
+								{dateNumRadicated &&
+								dateNumRadicated.length > 0 ? (
+									dateNumRadicated.map(
+										(item: DataRadicatedItemProps) => (
+											<MenuItem
+												style={{
+													width: "300px",
+												}}
+												key={item.id}
+												value={item.id}
+											>
+												{item.val}
+											</MenuItem>
+										)
+									)
+								) : (
+									<p>No data available</p>
+								)}
 							</Select>
 						</FormControl>
 					</div>
